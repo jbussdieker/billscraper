@@ -1,0 +1,8 @@
+---
+- - :pge
+  - :user: "foo"
+    :password: "bar"
+- - :att
+  - :user: "john"
+    :password: "doe"
+    :passcode: 1234

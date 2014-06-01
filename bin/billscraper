@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require 'billscraper'
+require 'yaml'
+
+FILTER = ARGV[0]
+
+def run_profile(type, params)
+  begin
+    output = BillScraper.fetch(type, params)
+  rescue Exception => e
+    puts "Error getting information for #{type} (#{e.message})"
+    e.backtrace.each do |line|
+      puts " | #{line}"
+    end
+  end
+
+  puts type
+
+  if output.kind_of? Array
+    output.each do |o|
+      puts "  #{o.inspect}"
+    end
+  else
+    puts "  #{output.inspect}"
+  end
+end
+
+profiles = YAML.load(File.read("config/profile.yml"))
+
+profiles.each do |type, params|
+  next if FILTER && type != FILTER.to_sym
+  run_profile(type, params)
+end
